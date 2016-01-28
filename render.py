@@ -15,11 +15,14 @@ PORT = 1234
 
 class NullTranslation:
     @staticmethod
-    def ugettext(message):
+    def ugettext(message, *args):
         return message
 
     @staticmethod
-    def ungettext(message):
+    def ungettext(message, plural=None, count=1):
+        if count > 1:
+            return plural
+
         return message
 
 
