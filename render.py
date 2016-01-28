@@ -44,19 +44,19 @@ class JinjaRenderHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             request.wfile.write("JSON not found.")
             return
 
-        with io.open(template, 'r') as fh:
+        with io.open(template, 'r', encoding="utf-8") as fh:
             tmpl = fh.read()
 
         with io.open(jsonfile, 'rb') as fh:
             data = json.load(fh)
 
         request.send_response(200)
-        request.send_header("Content-Type", "text/html")
+        request.send_header("Content-Type", "text/html; charset=utf-8")
         request.end_headers()
 
         try:
             out = jinja2.Template(tmpl).render(**data)
-            request.wfile.write(out)
+            request.wfile.write(out.encode("utf-8"))
         except Exception as e:
             request.wfile.write("<h1>Error</h1><p>" + e.message + "</p>")
 
