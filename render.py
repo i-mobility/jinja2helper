@@ -4,12 +4,32 @@ activate_this = '.ve/bin/activate_this.py'
 execfile(activate_this, dict(__file__=activate_this))
 
 import io
-import os.path
-import jinja2
 import json
+import os.path
 import BaseHTTPServer
 
+from jinja2 import Environment, FileSystemLoader
+
 PORT = 1234
+
+
+class NullTranslation:
+    @staticmethod
+    def ugettext(message):
+        return message
+
+    @staticmethod
+    def ungettext(message):
+        return message
+
+
+env = jinja_env = Environment(
+    loader=FileSystemLoader('.'),
+    extensions=['jinja2.ext.i18n'],
+    trim_blocks=True
+)
+
+env.install_gettext_translations(NullTranslation)
 
 
 class JinjaRenderHandler(BaseHTTPServer.BaseHTTPRequestHandler):
@@ -44,9 +64,6 @@ class JinjaRenderHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             request.wfile.write("JSON not found.")
             return
 
-        with io.open(template, 'r', encoding="utf-8") as fh:
-            tmpl = fh.read()
-
         with io.open(jsonfile, 'rb') as fh:
             data = json.load(fh)
 
@@ -55,7 +72,7 @@ class JinjaRenderHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         request.end_headers()
 
         try:
-            out = jinja2.Template(tmpl).render(**data)
+            out = env.get_template(template).render(**data)
             request.wfile.write(out.encode("utf-8"))
         except Exception as e:
             request.wfile.write("<h1>Error</h1><p>" + e.message + "</p>")
