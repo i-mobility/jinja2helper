@@ -28,7 +28,7 @@ class NullTranslation:
 
 env = jinja_env = Environment(
     loader=FileSystemLoader('.'),
-    extensions=['jinja2.ext.i18n'],
+    extensions=['jinja2.ext.i18n', 'jinja.Filters'],
     trim_blocks=True
 )
 
@@ -75,10 +75,11 @@ class JinjaRenderHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         request.end_headers()
 
         try:
-            out = env.get_template(template).render(**data)
+            out = env.get_template(template).render(data=data, **data)
             request.wfile.write(out.encode("utf-8"))
         except Exception as e:
-            request.wfile.write("<h1>Error</h1><p>" + e.message + "</p>")
+            raise
+            request.wfile.write("<h1>Error</h1><p>" + e + "</p>")
 
 
 if __name__ == "__main__":

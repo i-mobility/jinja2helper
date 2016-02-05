@@ -1,3 +1,146 @@
-{% if 1 > 2 %}Hello World{% else %}Hello there, {{ data.ticket.dc.created }}{% endif %}
+<!--[if (gte mso 9)|(IE)]>
+<table width="600" align="center" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+        <td>
+            <![endif]-->
+            <table class="content" align="center" cellpadding="0" cellspacing="0" border="0" style="width: 100%;max-width: 600px;">
+                <tr>
+                    <td class="header" bgcolor="#cecaa3" style="border-top-left-radius:5px; border-top-right-radius:5px; padding: 40px 30px 20px 30px;">
+                        <table  align="left" border="0" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td style="padding: 0 20px 20px 0;">
+                                    <img src="https://s3-eu-west-1.amazonaws.com/static.i-mobility.at/graphics/VAL_logo.png"  border="0" alt="Vienna Airport Lines">
+                                </td>
+                                <td style="font-family: sans-serif;font-size: 20px;line-height: 12px;font-weight:bold;font-color: #585858; text-align:center;">
+                                    {% trans %}invoice_title{% endtrans %}
+                                </td>
+                            </tr>
+                        </table>
+                        <!--[if mso]>
+                           </td><td>
+                        <![endif]-->
+                    </td>
+                </tr>
+                <tr>
+                    <td class="innerpadding borderbottom" style="padding: 30px;border-bottom: 1px solid #f2eeed;" bgcolor="#FFFFFF">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td style="font-family: sans-serif; text-align:right; font-size:10px;">{% trans %}invoice_title_location{% endtrans %}, {{data.ticket.dc.created|datestringformat('%d.%m.%Y %H:%M:%S')}}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-family: sans-serif; text-align:right; font-size:10px;">{% trans %}invoice_invoiceid{% endtrans %}: {{data.ticket.order_nr}}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0 0 10px 0; font-family: sans-serif; text-align:right; font-size:10px;">{% trans %}invoice_ticketid{% endtrans %}: {{data.ticket.invoice_nr}}</td>
+                            </tr>
+                            <tr>
+                                <td class="h2" style="color: #153643;font-family: sans-serif;padding: 0 0 5px 0;font-size: 15px;line-height: 25px;font-weight: bold;font-color: #585858;">
+                                    {% trans %}invoice_thankyou{% endtrans %}
+                                </td>
+                            <tr>
+                                <td class="bodycopy" style="color: #153643;font-family: sans-serif;font-size: 13px;line-height: 15px;">
+                                    <p>{% trans %}invoice_summary_title{% endtrans %}</p>
+                                    <hr>
+                                    <table border="0" style="font-size: 12px;" cellpadding="0">
+                                        <tr>
+                                            <td style="padding: 0 0 10px 0;">{% trans %}invoice_summary_ticketcount{% endtrans %}:</td>
+                                            <td style="padding: 0 0 10px 65px;">
+                                            {% if data.ticket.offer.request.amount_full %}
+                                              {{data.ticket.offer.request.amount_full}}x {% trans %}invoice_summary_tickettype1{% endtrans %}
+                                            {% endif %}
 
-Rechnungsnummer: {{ data.ticket.invoice_nr }}
+                                            {% if data.ticket.offer.request.amount_reduced and data.ticket.offer.request.amount_full %}
+                                              ,
+                                            {% endif %}
+
+                                            {% if data.ticket.offer.request.amount_reduced %}
+                                              {{data.ticket.offer.request.amount_reduced}}x {% trans %}invoice_summary_tickettype2{% endtrans %}
+                                            {% endif %}
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                            <td>{% trans %}invoice_summary_route{% endtrans %}:</td>
+                                            <td style="padding: 0 0 0 65px;">
+                                              {% if data.ticket.info.departure == 'airport' %}{% trans %}airport{% endtrans %}{% else %}{% trans %}city{% endtrans %}{% endif %}
+                                              -
+                                              {% if data.ticket.info.destination == 'airport' %}{% trans %}airport{% endtrans %}{% else %}{% trans %}city{% endtrans %}{% endif %}
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 0 0 15px 0;">{% trans %}invoice_summary_validity{% endtrans %}:</td>
+                                            <td style="padding: 0 0 15px 65px;">{{data.ticket.info.journey_date|datestringformat}}</td>
+                                        </tr>
+
+                                        {% if data.ticket.info.return_date %}
+                                        <tr>
+                                            <td>{% trans %}invoice_summary_route{% endtrans %}:</td>
+                                            <td style="padding: 0 0 0 65px;">
+                                              {% if data.ticket.info.destination == 'airport' %}{% trans %}airport{% endtrans %}{% else %}{% trans %}city{% endtrans %}{% endif %}
+                                              -
+                                              {% if data.ticket.info.departure == 'airport' %}{% trans %}airport{% endtrans %}{% else %}{% trans %}city{% endtrans %}{% endif %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 0;">{% trans %}invoice_summary_validity{% endtrans %}:</td>
+                                            <td style="padding: 0 0 0 65px;">{{data.ticket.info.return_date|datestringformat}}</td>
+                                        </tr>
+                                        {% endif %}
+
+                                    </table>
+                                    <hr>
+                                    <table border="0" style="font-size: 12px;" cellpadding="0">
+                                        <tr>
+                                            <td>{% trans %}invoice_summary_sum{% endtrans %} <small>{% trans %}invoice_summary_sum_note{% endtrans %}</small></td>
+                                            <td style="text-align:right;">{{(data.ticket.offer.price.total/100*90)|cent}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>{% trans %}invoice_summary_vat{% endtrans %}</td>
+                                            <td style="border-bottom: thin solid; border-color:grey; text-align:right;">{{(data.ticket.offer.price.total / 100*10)|cent}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 0 10px 0 0;">{% trans %}invoice_summary_totalsum{% endtrans %} <small>{% trans %}invoice_summary_totalsum_note{% endtrans %}</small></td>
+                                            <td style="border-bottom:double; border-color:grey; text-align:right; padding: 0 0 0 5px;">{{data.ticket.offer.price.total|cent}}</td>
+                                        </tr>
+                                    </table>
+                                    <hr>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="bodycopy" style="color: #153643;font-family: sans-serif;font-size: 13px;line-height: 14px;">
+                                    <p style="padding:0;">{% if data.ticket.info.traveler_names[1] %}{% trans %}invoice_text2{% endtrans %}{% else %}{% trans %}invoice_text1{% endtrans %}{% endif %}</p>
+                                     <p>{% trans %}invoice_text3{% endtrans %}</p>
+                                    <p>{% trans %}invoice_text4{% endtrans %}</p>
+                                    <p>Vienna Airport Lines</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="footer" bgcolor="#cecaa3" style="padding: 0px 30px 0px 30px; border-bottom-left-radius:5px; border-bottom-right-radius:5px;">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td class="bodycopy" style="color: #153643;font-family: sans-serif;font-size: 13px;line-height: 12px;">
+                                    <p><small>{% trans %}invoice_val_details{% endtrans %}</small></p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+
+            <table class="content" align="center" cellpadding="0" cellspacing="0" border="0" style="width: 100%;max-width: 600px;">
+                <tr>
+                    <td  style="color: #ababab;font-family: sans-serif;font-size: 14px;">
+                        <p><small>{% trans %}invoice_footer{% endtrans %}</small></p>
+                    </td>
+                </tr>
+            </table>
+
+            <!--[if (gte mso 9)|(IE)]>
+        </td>
+    </tr>
+</table>
+<![endif]-->

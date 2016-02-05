@@ -1,1 +1,41 @@
-{}
+{
+  "codestring": "...",
+  "ticket": {
+    "dc": {
+      "created": "2016-01-28T09:06:02+00:00",
+      "modified": "2016-01-28T09:06:02+00:00"
+    },
+    "id": "vk4W5",
+    "info": {
+      "departure": "airport",
+      "destination": "city",
+      "journey_date": "2015-12-11",
+      "traveler_names": [
+        "Anita Blake",
+        "Kitty Pryde"
+      ]
+    },
+    "invoice_nr": "16ival00001",
+    "offer": {
+      "price": {
+        "full": 500,
+        "reduced": 400,
+        "total": 900
+      },
+      "request": {
+        "amount_full": 1,
+        "amount_reduced": 1,
+        "trip_type": "roundtrip"
+      },
+      "signature": "..."
+    },
+    "order_nr": 1,
+    "owner_id": "10ykv3",
+    "payment": {
+      "payment_provider": "mpay24",
+      "payment_type": "TOKEN",
+      "transaction_id": "123"
+    },
+    "provider": "val"
+  }
+}
